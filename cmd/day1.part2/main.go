@@ -17,8 +17,6 @@ func isError(err error) bool {
 }
 
 // hasIncreased: tells if a window has increased, resets oldest window.
-// Only call when some element has reached it[x] == windowSize + 1, otherwise
-// will give an invalid answer.
 func hasIncreased(it []int64, add []int64) bool {
 	first := 0
 	second := 0
@@ -35,6 +33,7 @@ func hasIncreased(it []int64, add []int64) bool {
 	}
 
 	if first == second {
+		//protect against incomplete/undefined dataset
 		return false
 	}
 
