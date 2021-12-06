@@ -1,0 +1,236 @@
+package main
+
+import (
+	"bufio"
+	"fmt"
+	"os"
+	"runtime"
+	"strconv"
+	"strings"
+)
+
+const targetDays = 256
+
+/*
+First
+0 0000 0x0
+1 0001 0x1
+2 0010 0x2
+3 0011 0x3
+4 0100 0x4
+5 0101 0x5
+6 0110 0x6
+7 0111 0x7
+8 1000 0x8
+Second
+0 0000**** 0x0*
+1 0001**** 0x1*
+2 0010**** 0x2*
+3 0011**** 0x3*
+4 0100**** 0x4*
+5 0101**** 0x5*
+6 0110**** 0x6*
+7 0111**** 0x7*
+8 1000**** 0x8*
+*/
+
+type FishBank struct {
+	Bank []FishPair
+	Size int64
+}
+
+//real    0   1   2   3   4    5
+//pos    0 1 2 3 4 5 6 7 8 9 10 11
+
+func getBankPos(pos int64) (realPos int64, second bool) {
+	if pos % 2 == 0 {
+		realPos = pos / 2
+	} else {
+		realPos = (pos-1) / 2
+		second = true
+	}
+	return
+}
+
+func (self FishBank) GetFishAt(pos int64) uint8 {
+	realPos, second := getBankPos(pos)
+	if !second {
+		return self.Bank[realPos].GetFirst()
+	} else {
+		return self.Bank[realPos].GetSecond()
+	}
+}
+
+func (self FishBank) IncFishAt(pos int64) {
+	realPos, second := getBankPos(pos)
+	if !second {
+		self.Bank[realPos].IncFirst()
+	} else {
+		self.Bank[realPos].IncSecond()
+	}
+}
+
+func (self FishBank) AddFish(fish uint8) {
+	if self.Size % 2 == 0 {
+		self.Bank = append(self.Bank, FishPair{data: fish})
+	} else {
+		realPos, second := getBankPos(self.Size)
+		if !second {
+			//error!
+
+		} else {
+			self.Bank[realPos] =
+		}
+
+	}
+
+	self.Size = self.Size + 1
+
+
+}
+
+type FishPair struct {
+	data uint8
+}
+
+func (self FishPair) ResetFirst() {
+	mask := self.data & 0x0F
+	self.data = self.data ^ mask
+	self.data = self.data ^ 0x8
+}
+
+func (self FishPair) ResetSecond() uint8 {
+	mask := self.data & 0xF0
+	self.data = self.data ^ mask
+	self.data = self.data ^ 0x80
+}
+
+func (self FishPair) GetFirst() uint8 {
+	return self.data & 0x0F//discards most significant part (11111010 -> 00001010)
+}
+
+func (self FishPair) GetSecond() uint8 {
+	return self.data >> 4 //copies most significant part to right and zeroes (11111010 -> 00001111)
+}
+
+func (self FishPair) IncFirst() {
+	if self.GetFirst() == 0 {
+		self.data = self.data | 1
+	} else if self.GetFirst() == 1 {
+		self.data = self.data ^ 1
+		self.data = self.data | 2
+	} else if self.GetFirst() == 2 {
+		self.data = self.data | 1
+	} else if self.GetFirst() == 3 {
+		self.data = self.data ^ 3
+		self.data = self.data | 4
+	} else if self.GetFirst() == 4 {
+		self.data = self.data | 1
+	} else if self.GetFirst() == 5 {
+		self.data = self.data ^ 5
+		self.data = self.data | 6
+	} else if self.GetFirst() == 6 {
+		self.data = self.data | 1
+	} else if self.GetFirst() == 7 {
+		self.data = self.data ^ 7
+		self.data = self.data | 8
+	} else if self.GetFirst() == 8 {
+		self.data = self.data ^ 8
+	}
+}
+
+func (self FishPair) IncSecond() {
+	if self.GetSecond() == 0 {
+		self.data = self.data | 0x10
+	} else if self.GetSecond() == 1 {
+		self.data = self.data ^ 0x10
+		self.data = self.data | 0x20
+	} else if self.GetSecond() == 2 {
+		self.data = self.data | 0x10
+	} else if self.GetSecond() == 3 {
+		self.data = self.data ^ 0x30
+		self.data = self.data | 0x40
+	} else if self.GetSecond() == 4 {
+		self.data = self.data | 0x10
+	} else if self.GetSecond() == 5 {
+		self.data = self.data ^ 0x50
+		self.data = self.data | 0x60
+	} else if self.GetSecond() == 6 {
+		self.data = self.data | 0x10
+	} else if self.GetSecond() == 7 {
+		self.data = self.data ^ 0x70
+		self.data = self.data | 0x80
+	} else if self.GetSecond() == 8 {
+		self.data = self.data ^ 0x80
+	}
+}
+
+func isError(err error) bool {
+	if err != nil {
+		_, filename, line, _ := runtime.Caller(1)
+		fmt.Printf("%s:%d %s\n", filename, line, err.Error())
+	}
+	return (err != nil)
+}
+
+func growFishes(fishBank []int8) []int8 {
+	born := 0
+	for idx, v := range fishBank {
+		if v != 0 {
+			fishBank[idx] = fishBank[idx] - 1
+		} else {
+			fishBank[idx] = 6
+			born = born + 1
+		}
+	}
+	for x := 0; x < born; x++ {
+		fishBank = append(fishBank, 8)
+	}
+	return fishBank
+}
+
+func main() {
+	file, err := os.OpenFile("input", os.O_RDWR, 0644)
+
+	if isError(err) {
+		return
+	}
+
+	defer func(){
+		err = file.Close()
+		_ = isError(err)
+	}()
+
+	scanner := bufio.NewScanner(file)
+
+	//read header
+	ln := 0
+	fishBank := []int8{}
+	for scanner.Scan() {
+		ln = ln + 1
+		line := scanner.Text()
+
+		fishVec := strings.Split(line, ",")
+		if len(fishVec) == 0 {
+			isError(fmt.Errorf("no fish!", ln))
+			return
+		}
+
+		for _, v := range fishVec {
+			newFish, err := strconv.ParseInt(v, 10, 8)
+			if isError(err) {
+				return
+			}
+			fishBank = append(fishBank, int8(newFish))
+		}
+	}
+
+	days := 0
+	for ; days < targetDays; days++ {
+		//fmt.Printf("day %d: %v\n", days, fishBank)
+		fmt.Printf("day %d: %d fish\n", days, len(fishBank))
+		fishBank = growFishes(fishBank)
+	}
+	//fmt.Printf("day %d: %v\n", days, fishBank)
+	fmt.Printf("day %d: %d fish\n", days, len(fishBank))
+}
