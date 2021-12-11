@@ -269,7 +269,6 @@ func IsZeroMatrix(nrg [][]int64) bool {
 }
 
 func main() {
-	//part1 and part2
 	file, err := os.OpenFile("input", os.O_RDWR, 0644)
 
 	if isError(err) {

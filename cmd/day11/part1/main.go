@@ -258,7 +258,6 @@ func PrintMatrix(prefix string, nrg [][]int64) {
 }
 
 func main() {
-	//part1 and part2
 	file, err := os.OpenFile("input", os.O_RDWR, 0644)
 
 	if isError(err) {
