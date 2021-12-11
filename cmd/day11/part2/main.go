@@ -82,127 +82,37 @@ func HasDownRight(lineSize, colSize, linePos, colPos int) bool {
 }
 
 func incSurroundings(mat [][]Point, lineSize, colSize, linePos, colPos int) (flashes int) {
-	//fmt.Println("inc surrounds of ", linePos, colPos)
+
 	if HasUpLeft(lineSize, colSize, linePos, colPos) {
-		//if linePos-1==2 && colPos-1==2 {
-			//fmt.Println("inc 2,2 as upper left surrounds of ", linePos, colPos)
-		//}
 		mat[linePos-1][colPos-1].Value++
-		//PrintPointMatrix("\t", mat)
-		//if mat[linePos-1][colPos-1].Value > 9 && !mat[linePos-1][colPos-1].Flashed {
-			//fmt.Println("flash!!",linePos-1, colPos-1)
-			//mat[linePos-1][colPos-1].Flashed = true
-			//PrintPointMatrix("\t", mat)
-			//flashes++
-			//flashes = flashes + incSurroundings(mat, lineSize, colSize, linePos-1, colPos-1)
-		//}
 	}
 
 	if HasUp(lineSize, colSize, linePos, colPos) {
-		//if linePos-1==2 && colPos==2 {
-			//fmt.Println("inc 2,2 as upper surrounds of ", linePos, colPos)
-		//}
 		mat[linePos-1][colPos].Value++
-		//PrintPointMatrix("\t", mat)
-		//if mat[linePos-1][colPos].Value > 9 && !mat[linePos-1][colPos].Flashed {
-			//fmt.Println("flash!!",linePos-1, colPos)
-			//mat[linePos-1][colPos].Flashed = true
-			//PrintPointMatrix("\t", mat)
-			//flashes++
-			//flashes = flashes + incSurroundings(mat, lineSize, colSize, linePos-1, colPos)
-		//}
 	}
 
 	if HasUpRight(lineSize, colSize, linePos, colPos) {
-		//if linePos-1==2 && colPos+1==2 {
-			//fmt.Println("inc 2,2 as upper right surrounds of ", linePos, colPos)
-		//}
 		mat[linePos-1][colPos+1].Value++
-		//PrintPointMatrix("\t", mat)
-		//if mat[linePos-1][colPos+1].Value > 9 && !mat[linePos-1][colPos+1].Flashed {
-			//fmt.Println("flash!!",linePos-1, colPos+1)
-			//mat[linePos-1][colPos+1].Flashed = true
-			//PrintPointMatrix("\t", mat)
-			//flashes++
-			//flashes = flashes + incSurroundings(mat, lineSize, colSize, linePos-1, colPos+1)
-		//}
 	}
 	if HasLeft(lineSize, colSize, linePos, colPos) {
-		//if linePos==2 && colPos-1==2 {
-			//fmt.Println("inc 2,2 as left surrounds of ", linePos, colPos)
-		//}
 		mat[linePos][colPos-1].Value++
-		//PrintPointMatrix("\t", mat)
-		//if mat[linePos][colPos-1].Value > 9 && !mat[linePos][colPos-1].Flashed {
-			//fmt.Println("flash!!",linePos, colPos-1)
-			//mat[linePos][colPos-1].Flashed = true
-			//PrintPointMatrix("\t", mat)
-			//flashes++
-			//flashes = flashes + incSurroundings(mat, lineSize, colSize, linePos, colPos-1)
-		//}
 	}
 
 	if HasRight(lineSize, colSize, linePos, colPos) {
-		//if linePos==2 && colPos+1==2 {
-			//fmt.Println("inc 2,2 as right surrounds of ", linePos, colPos)
-		//}
 		mat[linePos][colPos+1].Value++
-		//PrintPointMatrix("\t", mat)
-		//if mat[linePos][colPos+1].Value > 9 && !mat[linePos][colPos+1].Flashed {
-			//fmt.Println("flash!!",linePos, colPos+1)
-			//mat[linePos][colPos+1].Flashed = true
-			//PrintPointMatrix("\t", mat)
-			//flashes++
-			//flashes = flashes + incSurroundings(mat, lineSize, colSize, linePos, colPos+1)
-		//}
 	}
 
 	if HasDownLeft(lineSize, colSize, linePos, colPos) {
-		//if linePos+1==2 && colPos-1==2 {
-			//fmt.Println("inc 2,2 as down left surrounds of ", linePos, colPos)
-		//}
 		mat[linePos+1][colPos-1].Value++
-		//PrintPointMatrix("\t", mat)
-		//if mat[linePos+1][colPos-1].Value > 9 && !mat[linePos+1][colPos-1].Flashed {
-			//fmt.Println("flash!!",linePos+1, colPos-1)
-			//mat[linePos+1][colPos-1].Flashed = true
-			//PrintPointMatrix("\t", mat)
-			//flashes++
-			//flashes = flashes + incSurroundings(mat, lineSize, colSize, linePos+1, colPos-1)
-		//}
 	}
 
 	if HasDown(lineSize, colSize, linePos, colPos) {
-		//if linePos+1==2 && colPos==2 {
-			//fmt.Println("inc 2,2 as down surrounds of ", linePos, colPos)
-		//}
 		mat[linePos+1][colPos].Value++
-		//PrintPointMatrix("\t", mat)
-		//if mat[linePos+1][colPos].Value > 9 && !mat[linePos+1][colPos].Flashed {
-			//fmt.Println("flash!!",linePos+1, colPos)
-			//mat[linePos+1][colPos].Flashed = true
-			//PrintPointMatrix("\t", mat)
-			//flashes++
-			//flashes = flashes + incSurroundings(mat, lineSize, colSize, linePos+1, colPos)
-		//}
 	}
 
 	if HasDownRight(lineSize, colSize, linePos, colPos) {
-		//if linePos+1==2 && colPos+1==2 {
-			//fmt.Println("inc 2,2 as down right surrounds of ", linePos, colPos)
-		//}
 		mat[linePos+1][colPos+1].Value++
-		//PrintPointMatrix("\t", mat)
-		//if mat[linePos+1][colPos+1].Value > 9 && !mat[linePos+1][colPos+1].Flashed {
-			//fmt.Println("flash!!",linePos+1, colPos+1)
-			//mat[linePos+1][colPos+1].Flashed = true
-			//PrintPointMatrix("\t", mat)
-			//flashes++
-			//flashes = flashes + incSurroundings(mat, lineSize, colSize, linePos-1, colPos+1)
-		//}
 	}
-
-	//fmt.Println("after inc surrounds of", linePos, colPos, "pos 2,2 is", mat[2][2])
 
 	return
 }
@@ -226,7 +136,7 @@ func FlashStep(nrg [][]int64) (res int) {
 	}
 
 	//fmt.Println("inc all")
-	//inc all
+
 	for linePos := range tmp {
 		for colPos, _ := range tmp[linePos] {
 			tmp[linePos][colPos].Value++
