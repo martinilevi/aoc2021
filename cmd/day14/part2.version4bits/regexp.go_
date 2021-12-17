@@ -1,0 +1,58 @@
+package main
+
+import (
+	"fmt"
+	"github.com/dlclark/regexp2"
+)
+
+func main() {
+	/*
+	NNCB
+	CH -> B 1
+	HH -> N 2
+	CB -> H 3
+	NH -> C 4
+	HB -> C 5
+	HC -> B 6
+	HN -> C 7
+	NN -> C 8
+	BH -> H 9
+	NC -> B 10
+	NB -> B 11
+	BN -> B 12
+	BB -> N 13
+	BC -> B 14
+	CC -> N 15
+	CN -> C 16
+	*/
+	replaces := []string{"BH"} ... continuara
+	r := regexp2.MustCompile("(?=(C)H)|(?=(H)H)|(?=(C)B)|(?=(N)H)|(?=(H)B)|(?=(H)C)|(?=(H)N)|(?=(N)N)|(?=(B)H)|(?=(N)C)|(?=(N)B)|(?=(B)N)|(?=(B)B)|(?=(B)C)|(?=(C)C)|(?=(C)N)", 0)
+	fmt.Println("regexp:", r)
+
+	// The `regexp` package can also be used to replace
+	// subsets of strings with other values.
+
+	m, _ := r.FindStringMatch("NNCB")
+
+	for k, v := range m.Groups() {
+		if len(v.Captures) != 0 {
+			fmt.Println("k", k)
+			fmt.Println("v", v)
+		}
+	}
+
+	for ;; {
+		fmt.Println("-----------------------", len(m.Groups()))
+		m, _ = r.FindNextMatch(m)
+		if m == nil {
+			break
+		}
+		for k, v := range m.Groups() {
+			if len(v.Captures) != 0 {
+				fmt.Println("k", k)
+				fmt.Println("v", v)
+			}
+		}
+	}
+
+}
